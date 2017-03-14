@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Scanner;
 
 // Notice, do not import com.mysql.jdbc.*
 // or you will have problems!
@@ -13,7 +14,8 @@ public class LoadDriver {
 
             Class.forName("com.mysql.jdbc.Driver").newInstance();
         } catch (Exception ex) {
-            // handle the error
+            System.out.println("Error: unable to load driver class!");
+            System.exit(1);
         }
 
         Connection conn = null;
@@ -31,13 +33,21 @@ public class LoadDriver {
                 stmt = conn.createStatement();
                 //rs = stmt.executeQuery("SELECT * from Gruppe");
 
-                /*or alternatively, if you don't know ahead of time that
-                 the query will be a SELECT...*/
+                Scanner nyScanner = new Scanner(System.in);
+
+
+                //create objects for the different user cases
+                CreateWorkout workoutCreater = new CreateWorkout(conn);
+
+
+
 
                 if (stmt.execute("SELECT * FROM Gruppe")) {
                     rs = stmt.getResultSet();
                 }
-                System.out.println(rs.toString());
+                rs.next();
+                System.out.println(rs.getString("Navn"));
+                System.out.println(rs.getString("Beskrivelse"));
 
                 }
 
