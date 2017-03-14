@@ -1,0 +1,3 @@
+# Self-defined ignores
+.DS_Store
+.idea/*
