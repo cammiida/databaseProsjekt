@@ -11,9 +11,10 @@ public class LoadDriver {
     static final String DB_URL = "jdbc:mysql://mysql.stud.ntnu.no/eivinklo_db-gr2";
 
     //  Database credentials
-    static final String USER = "tmsolber";
+    static final String USER = "camillmd";
     static final String PASS = "password";
-
+    static CreateWorkout workoutCreater;
+    static ExerciseDiary exerciseDiary;
 
     public static void main(String[] args) {
 
@@ -35,12 +36,7 @@ public class LoadDriver {
                     DriverManager.getConnection(DB_URL,
                             USER, PASS);
 
-            Scanner scanner = new Scanner(System.in);
             //create objects for the different user cases
-            CreateWorkout workoutCreater = new CreateWorkout(conn);
-            ExerciseDiary exerciseDiary = new ExerciseDiary(conn);
-            //CreateExercise createExercise = new CreateExercise(conn, scanner);
-            GetExercises getExercises = new GetExercises(conn);
 
             // Do something with the Connection
             //Statement stmt = null;
@@ -54,5 +50,41 @@ public class LoadDriver {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
+
+        String commands = "If you want to create a workout, write: new workout.\n" +
+                "If you want to create a workout based on a saved workout, write: create from old workout.\n" +
+                "If you want to read your excercise diary, write: read diary.\n" +
+                "To see commands, write: commands.\n" +
+                "To exit, write: exit.\n";
+
+        System.out.println(commands);
+
+
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        while(!input.equals("exit")){
+            if (input.equals("new workout")){
+                workoutCreater = new CreateWorkout(conn, scanner);
+                System.out.println(commands);
+                input = scanner.nextLine();
+            } else if (input.equals("create from old workout")){
+                //create object for crating workout from mal
+                System.out.println(commands);
+                input = scanner.nextLine();
+            } else if (input.equals("read diary")){
+                exerciseDiary = new ExerciseDiary(conn);
+                System.out.println(commands);
+                input = scanner.nextLine();
+
+            } else {
+                System.out.println("ERROR: Could not understand the command. Try again.\n");
+                System.out.println(commands);
+                input = scanner.nextLine();
+            }
+        }
+
+
     }
+
+
 }
