@@ -87,6 +87,13 @@ public class CreateWorkout {
 
             preparedStatement.executeUpdate();
 
+            System.out.println("Logged succesfully!");
+            System.out.println("Date: " + sqldate);
+            System.out.println("Time: " + sqltime);
+            System.out.println("Duration: " + durationInt);
+            System.out.println("Shape: " +personalShape);
+            System.out.println("Notes: " + notes);
+
         }
 
         catch (SQLException ex){
