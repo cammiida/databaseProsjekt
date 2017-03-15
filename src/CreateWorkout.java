@@ -1,6 +1,7 @@
 
 import java.sql.*;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -11,10 +12,11 @@ public class CreateWorkout {
     Integer workoutId;
     Date workoutDate;
     Time workoutTime;
-    Integer duration;
+    Time duration;
     String personalShape;
     String notes;
     String workoutDateString;
+    String workoutTimeString;
 
     public CreateWorkout(Connection connection, Scanner scanner){
 
@@ -32,13 +34,27 @@ public class CreateWorkout {
                 workoutId = Integer.parseInt(scanner.nextLine());
             }
 
-
+            //ask for and check the date
             System.out.println("Specify the date for the workout in the format: YYYY-MM-DD\n");
             workoutDateString = scanner.nextLine();
             while(!check_workout_date(workoutDateString)){
                 System.out.println("The date is not valid. Try again.\n");
-                //workoutDate = scanner.nextLine();
+                workoutDateString = scanner.nextLine();
             }
+
+            //ask for an check the time
+            System.out.println("Specify the time for the workout in the format: hh:mm");
+            workoutTimeString = scanner.nextLine();
+            while(!check_workout_date(workoutTimeString)){
+                System.out.println("The time is not valid. Try again.\n");
+                workoutTimeString = scanner.nextLine();
+            }
+
+            //ask for and check the duration
+            System.out.println("How long should the workout last (in minutes)?");
+            durationInt = Integer.parseInt(scanner.nextLine());
+
+
 
 
             //actually create a new workout in the database
@@ -53,21 +69,7 @@ public class CreateWorkout {
             preparedStatement.setString(5, personalShape);
             preparedStatement.setString(6, notes);
 
-
-            if (stmt.execute("SELECT * FROM Treningsokt")){
-                rs = stmt.getResultSet();
-            }
-            rs.next();
-
-
-
-
-            if (stmt.execute("SELECT * FROM Gruppe")) {
-                rs = stmt.getResultSet();
-            }
-            rs.next();
-            System.out.println(rs.getString("Navn"));
-            System.out.println(rs.getString("Beskrivelse"));
+            preparedStatement.executeUpdate();
 
         }
 
@@ -107,15 +109,22 @@ public class CreateWorkout {
     }
 
     public boolean check_workout_date(String date){
-        Date.parse(date);
-        System.out.println(date.getClass());
-        java.util.Date currentDate = new java.util.Date();
-        System.out.println(currentDate.getClass());
-        /*if (date > currentDate) {
-            workoutDate = java.sql.Date.valueOf(date);
-        }*/
+        SimpleDateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // date here is a string of format yyyy-MM-dd
+        java.util.Date date1 = newFormat.parse(date);
+        java.sql.Date sqldate = new java.sql.Date(date1.getTime());
         return true;
     }
+
+
+    // date here is a string of format yyyy-MM-dd
+    java.util.Date date_1 = df.parse(date) ;
+    java.sql.Date sqldate = new java.sql.Date(date_1.getTime());
+    sql = "select * from fgs_stock_report where Report_date = ? ";
+
+    PreparedStatement two = con.prepareStatement(sql);
+two.setDate(1,sqldate);ResultSet rs ;
+    rs = two.executeQuery(sql) ;
 
 
 }
