@@ -1,24 +1,24 @@
 import java.sql.*;
 
 
-public class CreateWorkout {
+public class ExerciseDiary {
 
     Statement stmt = null;
     ResultSet rs = null;
 
-    public CreateWorkout(Connection connection){
+    public ExerciseDiary(Connection connection){
+
+        String selectTableSQL = "SELECT Notat, Dato FROM Treningsokt";
 
         try {
             stmt = connection.createStatement();
-            //rs = stmt.executeQuery("SELECT * from Gruppe");
+            rs = stmt.executeQuery(selectTableSQL);
+            System.out.println("Notatlog:");
+            while (rs.next()) {
+                System.out.println("Dato: " + rs.getString("Dato"));
+                System.out.println("Notat: " + rs.getString("Notat"));
 
-
-            if (stmt.execute("SELECT * FROM Gruppe")) {
-                rs = stmt.getResultSet();
             }
-            rs.next();
-            System.out.println(rs.getString("Navn"));
-            System.out.println(rs.getString("Beskrivelse"));
 
         }
 
@@ -50,5 +50,9 @@ public class CreateWorkout {
                 stmt = null;
             }
         }
+
     }
+
+
+
 }
