@@ -1,6 +1,7 @@
 
 import java.sql.*;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -108,12 +109,17 @@ public class CreateWorkout {
         return true;
     }
 
-    public boolean check_workout_date(String date){
+    public boolean check_workout_date(String dateString){
         SimpleDateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
         // date here is a string of format yyyy-MM-dd
-        java.util.Date date1 = newFormat.parse(date);
-        java.sql.Date sqldate = new java.sql.Date(date1.getTime());
-        return true;
+
+        try {
+            java.util.Date date1 = newFormat.parse(dateString);
+            java.sql.Date sqldate = new java.sql.Date(date1.getTime());
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
     }
 
 
