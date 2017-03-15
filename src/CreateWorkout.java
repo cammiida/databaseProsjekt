@@ -1,17 +1,47 @@
 
 import java.sql.*;
+import java.util.Scanner;
 
 
 public class CreateWorkout {
 
     Statement stmt = null;
     ResultSet rs = null;
+    Integer workoutId;
+    String workoutDate;
 
-    public CreateWorkout(Connection connection){
+    public CreateWorkout(Connection connection, Scanner scanner){
 
         try {
             stmt = connection.createStatement();
             //rs = stmt.executeQuery("SELECT * from Gruppe");
+
+            System.out.println("Write the desired unique number for your workout. Maximum 11 numbers long.\n");
+            workoutId = Integer.parseInt(scanner.nextLine());
+
+            //get all primarykeys from earlier workouts and check if there is a match.
+            //If there is a match, ask for a new number from the user.
+            while(!check_primary_key(workoutId)){
+                System.out.println("The id number is not valid. Try again.\n");
+                workoutId = Integer.parseInt(scanner.nextLine());
+            }
+
+
+            System.out.println("Specify the date for the workout in the format: YYYY-MM-DD\n");
+            workoutDate = scanner.nextLine();
+            while(!ckeck_workout_date){
+                System.out.println("The date is not valid. Try again.\n");
+                workoutDate = scanner.nextLine();
+            }
+
+
+
+            if (stmt.execute("SELECT * FROM Treningsokt")){
+                rs = stmt.getResultSet();
+            }
+            rs.next();
+
+
 
 
             if (stmt.execute("SELECT * FROM Gruppe")) {
@@ -54,6 +84,11 @@ public class CreateWorkout {
 
     }
 
+    public boolean check_primary_key(Integer id){
+
+    }
+
+    public boolean check_workout_date(Date)
 
 
 }
