@@ -18,6 +18,7 @@ public class CreateWorkout {
     String notes;
     String workoutDateString;
     String workoutTimeString;
+    String durationString;
 
     public CreateWorkout(Connection connection, Scanner scanner){
 
@@ -35,6 +36,7 @@ public class CreateWorkout {
                 workoutId = Integer.parseInt(scanner.nextLine());
             }
 
+
             //ask for and check the date
             System.out.println("Specify the date for the workout in the format: YYYY-MM-DD\n");
             workoutDateString = scanner.nextLine();
@@ -46,27 +48,38 @@ public class CreateWorkout {
             //ask for an check the time
             System.out.println("Specify the time for the workout in the format: hh:mm");
             workoutTimeString = scanner.nextLine();
-            while(!check_workout_date(workoutTimeString)){
+            while(!check_workout_time(workoutTimeString)){
                 System.out.println("The time is not valid. Try again.\n");
                 workoutTimeString = scanner.nextLine();
             }
 
             //ask for and check the duration
             System.out.println("How long should the workout last (in minutes)?");
-            durationInt = Integer.parseInt(scanner.nextLine());
+            durationString = scanner.nextLine();
+            while(!check_duration(durationString)){
+                System.out.println("The time is not valid. Try again.\n");
+                durationString = scanner.nextLine();
+            }
 
+            Integer durationInt = Integer.parseInt(durationString);
 
+            //ask for and check the duration
+            System.out.println("Write your personal shape or press enter:");
+            personalShape = scanner.nextLine();
 
+            //ask for and check the duration
+            System.out.println("Write general notes or press enter:");
+            notes = scanner.nextLine();
 
             //actually create a new workout in the database
-            String insertTableSQL = "INSERT INTO Treningsokr"
-                    + "(workoutId, workoutDate, workoutTime, duration, personalShape, notes) VALUES"
+            String insertTableSQL = "INSERT INTO Treningsokt"
+                    + "(Id, Dato, Tidspunkt, Varighet, Personlig_form, Notat) VALUES"
                     + "(?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
             preparedStatement.setInt(1, workoutId);
             preparedStatement.setDate(2, workoutDate);
             preparedStatement.setTime(3, workoutTime);
-            preparedStatement.setInt(4, duration);
+            preparedStatement.setInt(4, durationInt);
             preparedStatement.setString(5, personalShape);
             preparedStatement.setString(6, notes);
 
@@ -122,15 +135,24 @@ public class CreateWorkout {
         }
     }
 
+    public boolean check_workout_time(String timeString){
+        SimpleDateFormat newFormat = new SimpleDateFormat("hh:mm");
 
-    // date here is a string of format yyyy-MM-dd
-    java.util.Date date_1 = df.parse(date) ;
-    java.sql.Date sqldate = new java.sql.Date(date_1.getTime());
-    sql = "select * from fgs_stock_report where Report_date = ? ";
+        try {
+            java.util.Date time1 = newFormat.parse(timeString);
+            java.sql.Date sqltime = new java.sql.Date(time1.getTime());
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
 
-    PreparedStatement two = con.prepareStatement(sql);
-two.setDate(1,sqldate);ResultSet rs ;
-    rs = two.executeQuery(sql) ;
-
-
+    public boolean check_duration(String durationString){
+        try {
+            Integer.parseInt(durationString);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
 }
