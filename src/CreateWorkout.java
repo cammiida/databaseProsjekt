@@ -1,6 +1,7 @@
 
 import java.sql.*;
-import java.util.Scanner;
+import java.sql.Date;
+import java.util.*;
 
 
 public class CreateWorkout {
@@ -8,7 +9,12 @@ public class CreateWorkout {
     Statement stmt = null;
     ResultSet rs = null;
     Integer workoutId;
-    String workoutDate;
+    Date workoutDate;
+    Time workoutTime;
+    Integer duration;
+    String personalShape;
+    String notes;
+    String workoutDateString;
 
     public CreateWorkout(Connection connection, Scanner scanner){
 
@@ -28,12 +34,24 @@ public class CreateWorkout {
 
 
             System.out.println("Specify the date for the workout in the format: YYYY-MM-DD\n");
-            workoutDate = scanner.nextLine();
-            while(!ckeck_workout_date){
+            workoutDateString = scanner.nextLine();
+            while(!check_workout_date(workoutDateString)){
                 System.out.println("The date is not valid. Try again.\n");
-                workoutDate = scanner.nextLine();
+                //workoutDate = scanner.nextLine();
             }
 
+
+            //actually create a new workout in the database
+            String insertTableSQL = "INSERT INTO Treningsokr"
+                    + "(workoutId, workoutDate, workoutTime, duration, personalShape, notes) VALUES"
+                    + "(?,?,?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
+            preparedStatement.setInt(1, workoutId);
+            preparedStatement.setDate(2, workoutDate);
+            preparedStatement.setTime(3, workoutTime);
+            preparedStatement.setInt(4, duration);
+            preparedStatement.setString(5, personalShape);
+            preparedStatement.setString(6, notes);
 
 
             if (stmt.execute("SELECT * FROM Treningsokt")){
@@ -85,10 +103,19 @@ public class CreateWorkout {
     }
 
     public boolean check_primary_key(Integer id){
-
+        return true;
     }
 
-    public boolean check_workout_date(Date)
+    public boolean check_workout_date(String date){
+        Date.parse(date);
+        System.out.println(date.getClass());
+        java.util.Date currentDate = new java.util.Date();
+        System.out.println(currentDate.getClass());
+        /*if (date > currentDate) {
+            workoutDate = java.sql.Date.valueOf(date);
+        }*/
+        return true;
+    }
 
 
 }
