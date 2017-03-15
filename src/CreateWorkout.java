@@ -19,13 +19,15 @@ public class CreateWorkout {
     String workoutDateString;
     String workoutTimeString;
     String durationString;
+    java.sql.Date sqldate;
+    java.sql.Time sqltime;
 
     public CreateWorkout(Connection connection, Scanner scanner){
 
         try {
             stmt = connection.createStatement();
             //rs = stmt.executeQuery("SELECT * from Gruppe");
-
+/*
             System.out.println("Write the desired unique number for your workout. Maximum 11 numbers long.\n");
             workoutId = Integer.parseInt(scanner.nextLine());
 
@@ -35,7 +37,7 @@ public class CreateWorkout {
                 System.out.println("The id number is not valid. Try again.\n");
                 workoutId = Integer.parseInt(scanner.nextLine());
             }
-
+*/
 
             //ask for and check the date
             System.out.println("Specify the date for the workout in the format: YYYY-MM-DD\n");
@@ -73,15 +75,15 @@ public class CreateWorkout {
 
             //actually create a new workout in the database
             String insertTableSQL = "INSERT INTO Treningsokt"
-                    + "(Id, Dato, Tidspunkt, Varighet, Personlig_form, Notat) VALUES"
-                    + "(?,?,?,?,?,?)";
+                    + "(Dato, Tidspunkt, Varighet, Personlig_form, Notat) VALUES"
+                    + "(?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
-            preparedStatement.setInt(1, workoutId);
-            preparedStatement.setDate(2, workoutDate);
-            preparedStatement.setTime(3, workoutTime);
-            preparedStatement.setInt(4, durationInt);
-            preparedStatement.setString(5, personalShape);
-            preparedStatement.setString(6, notes);
+            //preparedStatement.setInt(1, workoutId);
+            preparedStatement.setDate(1, sqldate);
+            preparedStatement.setTime(2, sqltime);
+            preparedStatement.setInt(3, durationInt);
+            preparedStatement.setString(4, personalShape);
+            preparedStatement.setString(5, notes);
 
             preparedStatement.executeUpdate();
 
@@ -128,7 +130,7 @@ public class CreateWorkout {
 
         try {
             java.util.Date date1 = newFormat.parse(dateString);
-            java.sql.Date sqldate = new java.sql.Date(date1.getTime());
+            sqldate = new java.sql.Date(date1.getTime());
             return true;
         } catch (ParseException e) {
             return false;
@@ -140,7 +142,7 @@ public class CreateWorkout {
 
         try {
             java.util.Date time1 = newFormat.parse(timeString);
-            java.sql.Date sqltime = new java.sql.Date(time1.getTime());
+            sqltime = new java.sql.Time(time1.getTime());
             return true;
         } catch (ParseException e) {
             return false;
