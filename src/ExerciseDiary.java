@@ -6,7 +6,7 @@ public class ExerciseDiary {
     Statement stmt = null;
     ResultSet rs = null;
 
-    public ExerciseDiary(Connection connection){
+    public ExerciseDiary(Connection connection) {
 
         String selectTableSQL = "SELECT Notat, Dato FROM Treningsokt";
 
@@ -20,15 +20,12 @@ public class ExerciseDiary {
 
             }
 
-        }
-
-        catch (SQLException ex){
+        } catch (SQLException ex) {
             // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-        }
-        finally {
+        } finally {
             // it is a good idea to release
             // resources in a finally{} block
             // in reverse-order of their creation
@@ -37,7 +34,8 @@ public class ExerciseDiary {
             if (rs != null) {
                 try {
                     rs.close();
-                } catch (SQLException sqlEx) { } // ignore
+                } catch (SQLException sqlEx) {
+                } // ignore
 
                 rs = null;
             }
@@ -45,14 +43,13 @@ public class ExerciseDiary {
             if (stmt != null) {
                 try {
                     stmt.close();
-                } catch (SQLException sqlEx) { } // ignore
+                } catch (SQLException sqlEx) {
+                } // ignore
 
                 stmt = null;
             }
         }
 
     }
-
-
 
 }
