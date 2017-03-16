@@ -19,6 +19,7 @@ public class LoadDriver {
     static ExerciseDiary exerciseDiary;
     static GetExercises getExercises;
     static CreateExercise createExercise;
+    static CreateTemplate createTemplate;
 
     public static void main(String[] args) {
 
@@ -74,7 +75,7 @@ public class LoadDriver {
                 System.out.println(commands);
                 input = scanner.nextLine();
             } else if (input.equals("create from old workout")){
-                //create object for crating workout from mal
+                createTemplate = new CreateTemplate(conn, scanner);
                 System.out.println(commands);
                 input = scanner.nextLine();
             } else if (input.equals("read diary")) {
