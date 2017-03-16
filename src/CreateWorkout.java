@@ -52,6 +52,7 @@ public class CreateWorkout {
                 System.out.println("The time is not valid. Try again.\n");
                 workoutTimeString = scanner.nextLine();
             }
+            workoutTime = sqltime;
 
             //ask for and check the duration
             System.out.println("Specify the duration of the workout in the format: hh:mm");
@@ -60,8 +61,7 @@ public class CreateWorkout {
                 System.out.println("The time is not valid. Try again.\n");
                 durationString = scanner.nextLine();
             }
-
-            Integer durationInt = Integer.parseInt(durationString);
+            duration = sqltime;
 
             //ask for and check the duration
             System.out.println("Write your personal shape or press enter:");
@@ -78,8 +78,8 @@ public class CreateWorkout {
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
             //preparedStatement.setInt(1, workoutId);
             preparedStatement.setDate(1, sqldate);
-            preparedStatement.setTime(2, sqltime);
-            preparedStatement.setInt(3, durationInt);
+            preparedStatement.setTime(2, workoutTime);
+            preparedStatement.setTime(3, duration);
             preparedStatement.setString(4, personalShape);
             preparedStatement.setString(5, notes);
 
@@ -87,8 +87,8 @@ public class CreateWorkout {
 
             System.out.println("Logged succesfully!");
             System.out.println("Date: " + sqldate);
-            System.out.println("Time: " + sqltime);
-            System.out.println("Duration: " + durationInt);
+            System.out.println("Time: " + workoutTime);
+            System.out.println("Duration: " + duration);
             System.out.println("Shape: " +personalShape);
             System.out.println("Notes: " + notes);
 
