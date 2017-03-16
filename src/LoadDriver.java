@@ -72,7 +72,7 @@ public class LoadDriver {
                 System.out.println(commands);
                 input = scanner.nextLine();
             } else if (input.equals("read diary")){
-                exerciseDiary = new ExerciseDiary(conn, scanner);
+                exerciseDiary = new ExerciseDiary(conn);
                 System.out.println(commands);
                 input = scanner.nextLine();
 
