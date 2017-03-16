@@ -1,3 +1,5 @@
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+
 import java.sql.*;
 import java.util.Scanner;
 
@@ -15,6 +17,8 @@ public class LoadDriver {
     static final String PASS = "password";
     static CreateWorkout workoutCreater;
     static ExerciseDiary exerciseDiary;
+    static GetExercises getExercises;
+    static CreateExercise createExercise;
 
     public static void main(String[] args) {
 
@@ -54,6 +58,8 @@ public class LoadDriver {
         String commands = "If you want to create a workout, write: new workout.\n" +
                 "If you want to create a workout based on a saved workout, write: create from old workout.\n" +
                 "If you want to read your excercise diary, write: read diary.\n" +
+                "If you want to show all exercises, write: show exercises. \n" +
+                "If you want to create an exercise, write: create exercises. \n" +
                 "To see commands, write: commands.\n" +
                 "To exit, write: exit.\n";
 
@@ -71,11 +77,18 @@ public class LoadDriver {
                 //create object for crating workout from mal
                 System.out.println(commands);
                 input = scanner.nextLine();
-            } else if (input.equals("read diary")){
+            } else if (input.equals("read diary")) {
                 exerciseDiary = new ExerciseDiary(conn);
                 System.out.println(commands);
                 input = scanner.nextLine();
-
+            } else if (input.equals("show exercises")) {
+                getExercises = new GetExercises(conn);
+                System.out.println(commands);
+                input = scanner.nextLine();
+            } else if (input.equals("create exercise")) {
+                createExercise = new CreateExercise(conn, scanner);
+                System.out.println(commands);
+                input = scanner.nextLine();
             } else {
                 System.out.println("ERROR: Could not understand the command. Try again.\n");
                 System.out.println(commands);
