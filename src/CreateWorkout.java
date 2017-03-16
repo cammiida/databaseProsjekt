@@ -48,15 +48,15 @@ public class CreateWorkout {
             //ask for an check the time
             System.out.println("Specify the time for the workout in the format: hh:mm");
             workoutTimeString = scanner.nextLine();
-            while(!check_workout_time(workoutTimeString)){
+            while(!check_time(workoutTimeString)){
                 System.out.println("The time is not valid. Try again.\n");
                 workoutTimeString = scanner.nextLine();
             }
 
             //ask for and check the duration
-            System.out.println("How long should the workout last (in minutes)?");
+            System.out.println("Specify the duration of the workout in the format: hh:mm");
             durationString = scanner.nextLine();
-            while(!check_duration(durationString)){
+            while(!check_time(durationString)){
                 System.out.println("The time is not valid. Try again.\n");
                 durationString = scanner.nextLine();
             }
@@ -125,9 +125,9 @@ public class CreateWorkout {
 
     }
 
-    public boolean check_primary_key(Integer id){
+    /*public boolean check_primary_key(Integer id){
         return true;
-    }
+    }*/
 
     public boolean check_workout_date(String dateString){
         SimpleDateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -142,7 +142,7 @@ public class CreateWorkout {
         }
     }
 
-    public boolean check_workout_time(String timeString){
+    public boolean check_time(String timeString){
         SimpleDateFormat newFormat = new SimpleDateFormat("hh:mm");
 
         try {
@@ -154,12 +154,4 @@ public class CreateWorkout {
         }
     }
 
-    public boolean check_duration(String durationString){
-        try {
-            Integer.parseInt(durationString);
-            return true;
-        } catch (NumberFormatException e){
-            return false;
-        }
-    }
 }
