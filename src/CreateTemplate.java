@@ -10,23 +10,12 @@ import java.util.*;
 
 
 class CreateTemplate {
-    Statement stmt = null;
-    ResultSet rs = null;
+    private Statement stmt = null;
+    private ResultSet rs = null;
 
     private Integer workoutID;
     private ArrayList<Integer> workoutIDs = new ArrayList<Integer>();
     private String templateName;
-
-    Date workoutDate;
-    Time workoutTime;
-    Time duration;
-    String personalShape;
-    String notes;
-    String workoutDateString;
-    String workoutTimeString;
-    String durationString;
-    java.sql.Date sqldate;
-    java.sql.Time sqltime;
 
 
     CreateTemplate(Connection connection, Scanner scanner){
@@ -35,7 +24,7 @@ class CreateTemplate {
             while (true) {
                 stmt = connection.createStatement();
 
-                //present all logged exercises (number + date + time)
+                // Present all logged exercises (number + date + time).
                 System.out.println("This is a list of all of your previous workouts:");
                 rs = stmt.executeQuery("SELECT ID, Dato, Tidspunkt FROM Treningsokt");
 
@@ -45,7 +34,7 @@ class CreateTemplate {
                     System.out.println();
                 }
 
-                //allow user to choose exercise
+                // Allow user to pick an exercise.
                 System.out.print("\nPick an exercise to base your template off of: ");
                 workoutID = Integer.valueOf(scanner.nextLine());
                 while (!IsValidWorkoutID(workoutID)) {
@@ -56,14 +45,16 @@ class CreateTemplate {
 
                 System.out.print("\n\n");
 
-                //display exercise info
+                // Display exercise info.
                 String selectInfoSQL = "SELECT R.OvelseNavn, IA.OktID, UA.OktID, SO.Belastning, "
                         + "SO.Antall_repetisjoner, SO.Antall_sett, UO.Lengde, UO.Varighet "
                         + "FROM Treningsokt T "
                         + "LEFT OUTER JOIN Innendorsaktivitet IA ON T.ID = IA.OktID "
                         + "LEFT OUTER JOIN Utendorsaktivitet UA ON T.ID = UA.OktID "
-                        //the following two joins may be changed to LEFT OUTER JOIN in order to circumvent
-                        //problems with lack of information in database (due to non-implemented restrictions)
+                        // The following two joins may be changed to LEFT OUTER JOIN in order to circumvent
+                        // problems with lack of information in database (due to non-implemented restrictions).
+                        // However, this will likely result in an empty output, which is somehow LESS informative
+                        // than "Unfortunately, this info is unavailable."
                         + "JOIN Resultat R ON T.ID = R.OktID "
                         + "JOIN Ovelse O ON R.OvelseNavn = O.Navn "
                         + "LEFT OUTER JOIN Styrkeovelse SO ON O.Navn = SO.OvelseNavn "
@@ -75,13 +66,13 @@ class CreateTemplate {
 
                 rs = selectWorkoutInfoStatement.executeQuery();
 
-                //do print if value not null (because of ISAs). If specific values (e.g. IA.ID) are not null, print also
-                //table name
+                // Do print if value not null (because of ISAs). If specific values (e.g. IA.ID) are not null, print also
+                // table name.
                 ResultSetMetaData rsmd = rs.getMetaData();
                 int numColumns = rsmd.getColumnCount();
 
-                //if the resultset is not empty (that is, the rest of the program does what it should), then iterate
-                //through the columns and print relevant info
+                // If the resultset is not empty (that is, the rest of the system does what it should), then iterate
+                // through the columns and print relevant info.
                 if (rs.next()) {
                     System.out.println("You have chosen the following exercise:\n");
 
@@ -105,13 +96,13 @@ class CreateTemplate {
                         System.out.println(columnName + ": " + columnValue);
                     }
                 }
-                //will trigger if the information required for join operations does not exist
-                //(for example, there is no row in "Resultat" with the corresponding
+                // Will trigger if the information required for join operations does not exist
+                // (for example, if there is no row in "Resultat" with the provided workoutID).
                 else {
                     System.out.println("Unfortunately, this info is unavailable.");
                 }
 
-                //pick/don't pick the currently displayed exercise, and allow user to make a new selection (not implemented)
+                // Pick/don't pick the currently displayed exercise, and allow user to make a new selection.
                 System.out.print("\nDo you wish do create a new template with these specifications (y/n)? ");
                 String token = scanner.nextLine();
                 while (!(token.equals("y") || token.equals("n"))) {
@@ -120,15 +111,14 @@ class CreateTemplate {
                     token = scanner.nextLine();
                 }
 
-                //if user answers "y", move on, else do two line breaks and start over
+                // If user answers "y", move on, else do two line breaks and start over.
                 if (token.equals("y")) {
                     break;
                 }
-
                 System.out.print("\n\n");
             }
 
-            //name the new template
+            // Name the new template
             System.out.print("\n\nInsert a unique name for this template: ");
             templateName = scanner.nextLine();
             while (!IsValidTemplateName(templateName)) {
@@ -137,7 +127,7 @@ class CreateTemplate {
                 templateName = scanner.nextLine();
             }
 
-            //execute SQL for creating template
+            // Execute SQL for creating template
             String insertTableSQL = "INSERT INTO Mal"
                     + "(Navn, OktID) VALUES"
                     + "(?,?)";

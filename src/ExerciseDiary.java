@@ -13,11 +13,10 @@ public class ExerciseDiary {
         try {
             stmt = connection.createStatement();
             rs = stmt.executeQuery(selectTableSQL);
-            System.out.println("Notatlog:");
+            System.out.println("Notatlogg:");
             while (rs.next()) {
                 System.out.println("Dato: " + rs.getString("Dato"));
                 System.out.println("Notat: " + rs.getString("Notat"));
-
             }
 
         } catch (SQLException ex) {

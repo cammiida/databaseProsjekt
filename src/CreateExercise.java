@@ -19,18 +19,18 @@ public class CreateExercise {
             rs = stmt.executeQuery("SELECT Navn FROM Ovelse");
 
 
-            System.out.println("Write the exercise name:");
+            System.out.print("Write the exercise name: ");
             exerciseName = scanner.nextLine();
 
             while (rs.next() && nameCheckValid) {
                 if (rs.getString("Navn").equals(exerciseName)) {
-                    System.out.println("That exercise already exist. Write in anorther name:");
+                    System.out.print("That exercise already exists. Write a different name: ");
                     exerciseName = scanner.nextLine();
                 } else {
                     nameCheckValid = false;
                 }
             }
-            System.out.println("Write a description of the exercise(can be empty):");
+            System.out.print("Write a description of the exercise (can be empty): ");
             exerciseDescription = scanner.nextLine();
 
             String insertTableSQL = "INSERT INTO Ovelse (Navn, Beskrivelse) VALUES (?, ?)";
@@ -40,8 +40,8 @@ public class CreateExercise {
             preparedStatement.setString(2,exerciseDescription);
 
             preparedStatement.executeUpdate();
-            System.out.println("You just created a exercise whit name " + exerciseName +
-                    " and description " + exerciseDescription);
+            System.out.println("You just created a exercise with name \"" + exerciseName +
+                    "\" and description \"" + exerciseDescription + "\"");
 
         }
 
@@ -73,9 +73,5 @@ public class CreateExercise {
                 stmt = null;
             }
         }
-
     }
-
-
-
 }

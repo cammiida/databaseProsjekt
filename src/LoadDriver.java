@@ -1,5 +1,3 @@
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-
 import java.sql.*;
 import java.util.Scanner;
 
@@ -56,45 +54,42 @@ public class LoadDriver {
             System.out.println("VendorError: " + ex.getErrorCode());
         }
 
-        String commands = "If you want to create a workout, write: new workout.\n" +
-                "If you want to create a workout based on a saved workout, write: create from old workout.\n" +
-                "If you want to read your excercise diary, write: read diary.\n" +
-                "If you want to show all exercises, write: show exercises. \n" +
-                "If you want to create an exercise, write: create exercises. \n" +
-                "To see commands, write: commands.\n" +
-                "To exit, write: exit.\n";
+        String commands = "If you want to save a new workout, type: \"new workout\".\n" +
+                "If you want to create a new template workout from a saved workout, type: \"new template\".\n" +
+                "If you want to read your workout diary, type: \"read diary\".\n" +
+                "If you want to show all exercises, type: \"show exercises\". \n" +
+                "If you want to create a new exercise, type: \"create exercise\". \n" +
+                "To see commands, type: \"commands\".\n" +
+                "To exit, type: \"exit\".\n";
 
-        System.out.println(commands);
 
 
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
+        String input = "";
         while(!input.equals("exit")){
+            System.out.println(commands);
+            System.out.print("Insert command: ");
+            input = scanner.nextLine();
+
             if (input.equals("new workout")){
+                System.out.println();
                 workoutCreater = new CreateWorkout(conn, scanner);
-                System.out.println(commands);
-                input = scanner.nextLine();
-            } else if (input.equals("create from old workout")){
+            } else if (input.equals("new template")){
+                System.out.println();
                 createTemplate = new CreateTemplate(conn, scanner);
-                System.out.println(commands);
-                input = scanner.nextLine();
             } else if (input.equals("read diary")) {
+                System.out.println();
                 exerciseDiary = new ExerciseDiary(conn);
-                System.out.println(commands);
-                input = scanner.nextLine();
             } else if (input.equals("show exercises")) {
+                System.out.println();
                 getExercises = new GetExercises(conn);
-                System.out.println(commands);
-                input = scanner.nextLine();
             } else if (input.equals("create exercise")) {
+                System.out.println();
                 createExercise = new CreateExercise(conn, scanner);
-                System.out.println(commands);
-                input = scanner.nextLine();
-            } else {
-                System.out.println("ERROR: Could not understand the command. Try again.\n");
-                System.out.println(commands);
-                input = scanner.nextLine();
+            } else if (!input.equals("commands")) {
+                System.out.println("\nERROR: Could not understand the command. Try again.");
             }
+            System.out.println("\n");
         }
 
 

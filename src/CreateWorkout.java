@@ -38,37 +38,37 @@ public class CreateWorkout {
 */
 
             //ask for and check the date
-            System.out.println("Specify the date for the workout in the format: YYYY-MM-DD\n");
+            System.out.print("Specify the date for the workout in the format [YYYY-MM-DD]: ");
             workoutDateString = scanner.nextLine();
             while(!check_workout_date(workoutDateString)){
-                System.out.println("The date is not valid. Try again.\n");
+                System.out.print("The date is not valid. Try again: ");
                 workoutDateString = scanner.nextLine();
             }
 
             //ask for an check the time
-            System.out.println("Specify the time for the workout in the format: hh:mm");
+            System.out.print("Specify the time for the workout in the format [hh:mm]: ");
             workoutTimeString = scanner.nextLine();
             while(!check_time(workoutTimeString)){
-                System.out.println("The time is not valid. Try again.\n");
+                System.out.print("The time is not valid. Try again: ");
                 workoutTimeString = scanner.nextLine();
             }
             workoutTime = sqltime;
 
             //ask for and check the duration
-            System.out.println("Specify the duration of the workout in the format: hh:mm");
+            System.out.print("Specify the duration of the workout in the format [hh:mm]: ");
             durationString = scanner.nextLine();
             while(!check_time(durationString)){
-                System.out.println("The time is not valid. Try again.\n");
+                System.out.print("The time is not valid. Try again: ");
                 durationString = scanner.nextLine();
             }
             duration = sqltime;
 
             //ask for and check the duration
-            System.out.println("Write your personal shape or press enter:");
+            System.out.print("Write your personal shape or press enter: ");
             personalShape = scanner.nextLine();
 
             //ask for and check the duration
-            System.out.println("Write general notes or press enter:");
+            System.out.print("Write general notes or press enter: ");
             notes = scanner.nextLine();
 
             //actually create a new workout in the database
